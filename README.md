@@ -1,7 +1,7 @@
 ## README.md
 # 📱 TikTok Live Alert - Google Apps Script Automation
 
-![TikTok Live Alert](https://placehold.co/1200x630/png)
+![TikTok Live Alert]([https://placehold.co/1200x630/png](https://blog.classy.id/upload/gambar_berita/e780f1181a8b4f28a3f370977ace83d3_20241105220512.jpeg))
 
 Automation tool untuk memantau status live streaming TikTok dan mendapatkan notifikasi real-time melalui Telegram dan WhatsApp menggunakan Google Apps Script. Perfect untuk creator, moderator, dan penggemar yang tidak ingin melewatkan live streaming favorit mereka.
 
