@@ -25,7 +25,7 @@ function sendToTelegram(message, imageUrl) {
 
 function sendToWhatsApp(message, imageUrl) {
   try {
-    const whatsappUrl = "https://kirimwa.apps.classy.id/send-media";
+    const whatsappUrl = "https://mpedia/send-media";
     
     const payload = {
       api_key: CONFIG.notification.whatsapp.apiKey,
