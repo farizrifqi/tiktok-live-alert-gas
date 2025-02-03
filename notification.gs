@@ -48,3 +48,31 @@ function sendToWhatsApp(message, imageUrl) {
     Logger.log("Error mengirim ke WhatsApp:", error);
   }
 }
+
+function sendToDiscord(embeds) {
+  try {
+    const webhooks = CONFIG.notification.discord.webhooks;
+    
+    function createFetchOptions(webhook){
+      const { name, photo, pingEveryone } = webhook
+      const payload = {
+        content: pingEveryone ? '@everyone' : '',
+        username: name,
+        avatar_url: photo,
+        embeds:[embeds]
+      };
+
+      return {
+        method: "post",
+        contentType: "application/json",
+        muteHttpExceptions: true,
+        payload: JSON.stringify(payload),
+      };
+    }
+    
+    Promise.all(webhooks.map(webhook=> UrlFetchApp.fetch(webhook.url, createFetchOptions(webhook))));
+    Logger.log("Berhasil mengirim notifikasi ke Webhook Discord");
+  } catch (error) {
+    Logger.log("Error mengirim ke Webhook Discord:", error);
+  }
+}
