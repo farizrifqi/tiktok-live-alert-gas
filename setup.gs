@@ -21,6 +21,7 @@ function setup() {
     Logger.log(`Interval check: ${CONFIG.tiktok.checkInterval} jam`);
     Logger.log(`Telegram notification: ${CONFIG.notification.telegram.enabled ? "Aktif" : "Nonaktif"}`);
     Logger.log(`WhatsApp notification: ${CONFIG.notification.whatsapp.enabled ? "Aktif" : "Nonaktif"}`);
+    Logger.log(`Discord notification: ${CONFIG.notification.discord.enabled ? "Aktif" : "Nonaktif"}`);
 
   } catch (error) {
     Logger.log("Error dalam setup:", error);
