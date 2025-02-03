@@ -14,10 +14,10 @@ function setup() {
 
     // 3. Test notifikasi
     Logger.log("Menjalankan test pertama...");
-    fetchTikTokLiveData();
+    run();
 
     Logger.log("Setup selesai! Monitor TikTok Live sudah berjalan.");
-    Logger.log(`Monitoring untuk user: ${CONFIG.tiktok.username}`);
+    Logger.log(`Monitoring untuk user: ${CONFIG.tiktok.username.join(", ")}`);
     Logger.log(`Interval check: ${CONFIG.tiktok.checkInterval} jam`);
     Logger.log(`Telegram notification: ${CONFIG.notification.telegram.enabled ? "Aktif" : "Nonaktif"}`);
     Logger.log(`WhatsApp notification: ${CONFIG.notification.whatsapp.enabled ? "Aktif" : "Nonaktif"}`);
@@ -49,6 +49,14 @@ function testNotification() {
     // Test WhatsApp jika diaktifkan
     if (CONFIG.notification.whatsapp.enabled) {
       sendToWhatsApp(testMessage, "https://placehold.co/400x300/png");
+    }
+
+    if (CONFIG.notification.discord.enabled) {
+      let testEmbed = {
+        title: "test",
+        description: "test",
+      }
+      sendToDiscord(testEmbed);
     }
 
     Logger.log("Test notifikasi selesai!");
