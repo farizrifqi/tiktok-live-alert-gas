@@ -12,6 +12,7 @@ Automation tool untuk memantau status live streaming TikTok dan mendapatkan noti
 - 🎯 Konfigurasi mudah dan fleksibel
 - 📊 Logging aktivitas lengkap
 - 🔒 Aman dengan penyimpanan kredensial terpisah
+- 👥 Multiple username
 
 ## 🚀 Cara Penggunaan
 
@@ -19,6 +20,7 @@ Automation tool untuk memantau status live streaming TikTok dan mendapatkan noti
 1. Akun Google (untuk Google Apps Script)
 2. Bot Telegram & Token API (jika menggunakan notifikasi Telegram)
 3. Akun WhatsApp Business API (jika menggunakan notifikasi WhatsApp)
+4. Webhook Discord
 
 ### Langkah Instalasi
 1. Buka [Google Apps Script](https://script.google.com/)
@@ -31,18 +33,19 @@ Automation tool untuk memantau status live streaming TikTok dan mendapatkan noti
    - helper.gs
    - utils.gs
    - setup.gs
+   - formatter.gs
 
 ### Konfigurasi
 1. Update konfigurasi di `config.gs`:
 ```javascript
 const CONFIG = {
   tiktok: {
-    username: "@username_tiktok",  // Username TikTok yang ingin dimonitor
+    username: ["@username_tiktok", "@username_tiktok2"],  // Username TikTok yang ingin dimonitor
     checkInterval: 1,              // Interval pengecekan (jam)
   },
   notification: {
     telegram: {
-      enabled: true,
+      enabled: false,
       token: "YOUR_TELEGRAM_TOKEN",
       chatId: "YOUR_CHAT_ID"
     },
@@ -51,7 +54,18 @@ const CONFIG = {
       apiKey: "YOUR_WHATSAPP_API_KEY",
       sender: "YOUR_WHATSAPP_NUMBER",
       recipient: "YOUR_WHATSAPP_NUMBER"
-    }
+    },
+     discord:{
+      enabled: false,
+      webhooks: [ // Bisa lebih dari 1 Webhooks
+        {
+          url: "https://discord.com/api/webhooks/1335452249648009266/ctBV-POatxzBPf6UAt1ajFgu701qJRDOdPSDCJfVUFzdmPThGrD4ykebpXPuWN2VhLGq",
+          name: "Tiktok Live",
+          photo: "https://blob.cloudcomputing.id/images/d4e9c208-77de-4a07-84ca-fb950b7b21cc/logo-tiktok-l-min.jpg",
+          pingEveryone: false,
+        }
+      ]
+    },
   }
 };
 ```
