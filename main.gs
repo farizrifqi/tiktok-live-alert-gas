@@ -39,7 +39,8 @@ function fetchTikTokLiveData(username) {
                       (liveRoomInfo.status === 4 ? "⭕ OFFLINE" : "❓ UNKNOWN");
 
     // Check perubahan status
-    const state = PropertyManager.get(username)
+    let state = PropertyManager.get(username)
+    if(state) state = JSON.parse(states)
     const lastRoomId = state?.lastRoomId ?? null
     const lastStatus = state?.lastStatus ?? null
     const lastDate = state?.lastDate ?? null
@@ -74,11 +75,14 @@ function fetchTikTokLiveData(username) {
         }
 
         // Update properties
-        PropertyManager.set(username, {
+        PropertyManager.set(username, JSON.stringify({
           'lastRoomId': roomId,
           'lastStatus': liveRoomInfo.status.toString(),
           'lastDate': todayDate
-        });
+        }));
+        let states = PropertyManager.get(username)
+        if(states) states = JSON.parse(states)
+        Logger.log(states.lastStatus)
       }
     }
   } catch (error) {
