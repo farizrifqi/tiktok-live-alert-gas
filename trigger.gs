@@ -3,13 +3,13 @@ function createHourlyTrigger() {
   // Hapus trigger yang ada
   const allTriggers = ScriptApp.getProjectTriggers();
   allTriggers.forEach(trigger => {
-    if (trigger.getHandlerFunction() === "fetchTikTokLiveData") {
+    if (trigger.getHandlerFunction() === "run") {
       ScriptApp.deleteTrigger(trigger);
     }
   });
   
   // Buat trigger baru
-  ScriptApp.newTrigger("fetchTikTokLiveData")
+  ScriptApp.newTrigger("run")
     .timeBased()
     .everyHours(CONFIG.tiktok.checkInterval)
     .create();
