@@ -1,24 +1,12 @@
 // main.gs
-function formatMessage(data) {
-  const {statusText, nowFormatted, liveRoomInfo, ownerInfo} = data;
-  
-  return `${CONFIG.messageFormat.title}
-
-📺 Status: ${statusText}
-⏰ Waktu: ${nowFormatted}
-👤 Streamer: ${ownerInfo.nickname} (${ownerInfo.uniqueId})
-💭 Bio: ${ownerInfo.signature || '-'}
-🆔 Room ID: ${liveRoomInfo.roomID}
-
-🔴 Link Live:
-${liveRoomInfo.liveUrl}
-
-#TikTokLive #${ownerInfo.uniqueId.replace('@', '')}`;
+function run(){
+  const username = CONFIG.tiktok.username
+  Promise.all(username.map(value => fetchTikTokLiveData(value)))
 }
 
-function fetchTikTokLiveData() {
+function fetchTikTokLiveData(username) {
   try {
-    const liveUrl = `https://www.tiktok.com/${CONFIG.tiktok.username}/live`;
+    const liveUrl = `https://www.tiktok.com/${username}/live`;
     const roomId = getRoomIdFromTikTokLive(liveUrl);
     
     if (!roomId) {
@@ -51,9 +39,10 @@ function fetchTikTokLiveData() {
                       (liveRoomInfo.status === 4 ? "⭕ OFFLINE" : "❓ UNKNOWN");
 
     // Check perubahan status
-    const lastStatus = PropertyManager.get('lastStatus');
-    const lastRoomId = PropertyManager.get('lastRoomId');
-    const lastDate = PropertyManager.get('lastDate');
+    const state = PropertyManager.get(username)
+    const lastRoomId = state?.lastRoomId ?? null
+    const lastStatus = state?.lastStatus ?? null
+    const lastDate = state?.lastDate ?? null
     const todayDate = new Date().toDateString();
 
     Logger.log(`Status: ${statusText} | RoomId: ${roomId} | Last RoomId: ${lastRoomId}`);
@@ -64,7 +53,8 @@ function fetchTikTokLiveData() {
           statusText,
           nowFormatted,
           liveRoomInfo,
-          ownerInfo
+          ownerInfo,
+          extraInfo
         };
 
         const formattedMessage = formatMessage(messageData);
@@ -78,8 +68,13 @@ function fetchTikTokLiveData() {
           sendToWhatsApp(formattedMessage, liveRoomInfo.coverUrl);
         }
 
+        if (CONFIG.notification.discord.enabled) {
+          const formattedEmbed = formatEmbedDiscord(messageData);
+          sendToDiscord(formattedEmbed);
+        }
+
         // Update properties
-        PropertyManager.setMultiple({
+        PropertyManager.set(username, {
           'lastRoomId': roomId,
           'lastStatus': liveRoomInfo.status.toString(),
           'lastDate': todayDate
