@@ -40,7 +40,7 @@ function fetchTikTokLiveData(username) {
 
     // Check perubahan status
     let state = PropertyManager.get(username)
-    if(state) state = JSON.parse(states)
+    if(state) state = JSON.parse(state)
     const lastRoomId = state?.lastRoomId ?? null
     const lastStatus = state?.lastStatus ?? null
     const lastDate = state?.lastDate ?? null
